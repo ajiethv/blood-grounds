@@ -94,7 +94,7 @@ private:
 	float m_mass = 5.f;
 
 	//stuff for the game
-	int m_bulletDamage[13];
+	std::vector<int> m_bullet;
 };
 
 

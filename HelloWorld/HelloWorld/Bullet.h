@@ -21,7 +21,7 @@ private:
 	float m_speed = 0.f;
 };
 
-//Sends transform TO json file
+//Sends bullet TO json file
 inline void to_json(nlohmann::json& j, const Bullet& bullet)
 {
 	//Save damage
@@ -30,7 +30,7 @@ inline void to_json(nlohmann::json& j, const Bullet& bullet)
 	j["BulletSpeed"] = bullet.GetSpeed();
 }
 
-//Reads transform in FROM json file
+//Reads bullet in FROM json file
 inline void from_json(const nlohmann::json& j, Bullet& bullet)
 {
 	//Set Damage

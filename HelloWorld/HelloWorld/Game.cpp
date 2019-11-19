@@ -27,7 +27,7 @@ Game::~Game()
 void Game::InitGame()
 {
 	//Scene names and clear colors
-	m_name = "Assignment Scene Test";
+	m_name = "Blood-Grounds";
 	m_clearColor = vec4(0.15f, 0.33f, 0.58f, 1.f);
 
 	//Initializes the backend
@@ -85,59 +85,67 @@ void Game::Update()
 	//Update the backend
 	BackEnd::Update(m_register);
 
+
+
 	std::cout << ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() << " " << ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() << "\n";
 	std::cout << ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionX() << " " << ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionY() << "\n\n";
 
-	for (int i = 2; i < 16; i++) {
-		if (ECS::GetComponent<Transform>(i).GetPositionX() != ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() || ECS::GetComponent<Transform>(i).GetPositionY() != ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY()) {
-			float angle = (ECS::GetComponent<Transform>(i).GetRotationAngleZ()) * (180.f / 3.1514f);
-			vec2 bulletVelocity = vec2(10.f, 10.f);
+	int interval = 0;
+	std::vector<int> deleteBullet;
+	for (auto entity : m_bullet) {
+		float angle = (ECS::GetComponent<Transform>(entity).GetRotationAngleZ()) * (180.f / 3.1514f);
+		vec2 bulletVelocity = vec2(10.f, 10.f);
 
-			if (angle < 90.f) {
-				bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
-				bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
-			}
-			else if (angle < 180.f) {
-				angle = 180.f - angle;
-				bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
-				bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
-			}
-			else if (angle < 270.f) {
-				angle -= 180.f;
-				bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
-				bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
-			}
-			else if (angle < 360.f) {
-				angle = 360.f - angle;
-				bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
-				bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
-			}
-			else if (angle == 90.f) {
-				bulletVelocity.x = 0.f;
-			}
-			else if (angle == 180.f) {
-				bulletVelocity.y = 0.f;
-				bulletVelocity.x = -bulletVelocity.x;
-			}
-			else if (angle == 270.f) {
-				bulletVelocity.y = -bulletVelocity.y;
-				bulletVelocity.x = 0.f;
-			}
-			else {
-				bulletVelocity.y = 0.f;
-			}
-
-			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX() + bulletVelocity.x, ECS::GetComponent<Transform>(i).GetPositionY() + bulletVelocity.y, 10.f);
+		if (angle < 90.f) {
+			bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
+			bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
+		}
+		else if (angle < 180.f) {
+			angle = 180.f - angle;
+			bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
+			bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
+		}
+		else if (angle < 270.f) {
+			angle -= 180.f;
+			bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
+			bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
+		}
+		else if (angle < 360.f) {
+			angle = 360.f - angle;
+			bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
+			bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
+		}
+		else if (angle == 90.f) {
+			bulletVelocity.x = 0.f;
+		}
+		else if (angle == 180.f) {
+			bulletVelocity.y = 0.f;
+			bulletVelocity.x = -bulletVelocity.x;
+		}
+		else if (angle == 270.f) {
+			bulletVelocity.y = -bulletVelocity.y;
+			bulletVelocity.x = 0.f;
+		}
+		else {
+			bulletVelocity.y = 0.f;
 		}
 
-		vec2 bulletPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY());
+		ECS::GetComponent<Transform>(entity).SetPosition(ECS::GetComponent<Transform>(entity).GetPositionX() + bulletVelocity.x, ECS::GetComponent<Transform>(entity).GetPositionY() + bulletVelocity.y, 10.f);
+
+		vec2 bulletPos = vec2(ECS::GetComponent<Transform>(entity).GetPositionX(), ECS::GetComponent<Transform>(entity).GetPositionY());
 		vec2 playerPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
 
 		if (bulletPos.x > playerPos.x + 100.f || bulletPos.x < playerPos.x - 100.f || bulletPos.y > playerPos.y + 100.f || bulletPos.y < playerPos.y - 100.f) {
-			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 10.f);
-			ECS::GetComponent<Transform>(i).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ());
+			deleteBullet.push_back(interval);
 		}
+		interval++;
 	}
+
+	for (int x : deleteBullet) {
+		ECS::DestroyEntity(m_bullet[x]);
+		m_bullet.erase(m_bullet.begin() + x);
+	}
+	deleteBullet.clear();
 }
 
 void Game::GUI()
@@ -189,12 +197,6 @@ void Game::AcceptInput()
 
 void Game::KeyboardHold()
 {
-	bool moveBullet[14] = { false, false, false, false, false, false, false, false, false, false, false, false, false, false };
-	for (int i = 2; i < 16; i++) {
-		if (ECS::GetComponent<Transform>(i).GetPositionX() == ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() && ECS::GetComponent<Transform>(i).GetPositionY() == ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY()) {
-			moveBullet[i - 2] = true;
-		}
-	}
 
 	vec3 position = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
 	float speed = 1.f;
@@ -220,12 +222,6 @@ void Game::KeyboardHold()
 	{
 		ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionY(position.y - speed);
 	}
-
-	for (int i = 2; i < 16; i++) {
-		if (moveBullet[i - 2]) {
-			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition());
-		}
-	}
 }
 
 void Game::KeyboardDown()
@@ -247,13 +243,6 @@ void Game::KeyboardUp()
 
 void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 {
-	bool rotateBullet[14] = { false, false, false, false, false, false, false, false, false, false, false, false, false, false };
-	for (int i = 2; i < 16; i++) {
-		if (ECS::GetComponent<Transform>(i).GetPositionX() == ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() && ECS::GetComponent<Transform>(i).GetPositionY() == ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY()) {
-			rotateBullet[i - 2] = true;
-		}
-	}
-
 	vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
 	float angle = 0.f;
 
@@ -289,11 +278,6 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	}
 
 	ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(angle * (3.1415f / 180.f));
-	for (int i = 2; i < 16; i++) {
-		if (rotateBullet[i - 2]) {
-			ECS::GetComponent<Transform>(i).SetRotationAngleZ(angle * (3.1415f / 180.f));
-		}
-	}
 
 	if (m_guiActive)
 	{
@@ -315,48 +299,26 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 		shooting = true;
 
-		for (int i = 2; i < 3; i++) {
-			if (ECS::GetComponent<Transform>(i).GetPositionX() == ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() && ECS::GetComponent<Transform>(i).GetPositionY() == ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY()) {
-				float angle = (ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ()) * (180.f / 3.1514f);
-				vec2 bulletVelocity = vec2(10.f, 10.f);
+		{
+			auto bullet = ECS::CreateEntity();
 
-				if (angle < 90.f) {
-					bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
-					bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
-				}
-				else if (angle < 180.f) {
-					angle = 180.f - angle;
-					bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
-					bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
-				}
-				else if (angle < 270.f) {
-					angle -= 180.f;
-					bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
-					bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
-				}
-				else if (angle < 360.f) {
-					angle = 360.f - angle;
-					bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
-					bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
-				}
-				else if (angle == 90.f) {
-					bulletVelocity.x = 0.f;
-				}
-				else if (angle == 180.f) {
-					bulletVelocity.y = 0.f;
-					bulletVelocity.x = -bulletVelocity.x;
-				}
-				else if (angle == 270.f) {
-					bulletVelocity.y = -bulletVelocity.y;
-					bulletVelocity.x = 0.f;
-				}
-				else {
-					bulletVelocity.y = 0.f;
-				}
+			ECS::AttachComponent<Sprite>(bullet);
+			ECS::AttachComponent<Transform>(bullet);
+			ECS::AttachComponent<Bullet>(bullet);
 
-				ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX() + bulletVelocity.x, ECS::GetComponent<Transform>(i).GetPositionY() + bulletVelocity.y, 10.f);
-				break;
-			}
+			std::string fileName = "bullet.png";
+
+			vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+			ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
+			ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
+			ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ());
+			ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
+			ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
+
+			unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+			ECS::SetUpIdentifier(bullet, bitHolder, "bullet");
+			m_bullet.push_back(bullet);
 		}
 	}
 
@@ -367,6 +329,10 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 		ImGui::GetIO().MouseDown[1] = (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT));
 		ImGui::GetIO().MouseDown[2] = (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_MIDDLE));
 	}
+
+	//set the camera to focus on the main player
+	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 
 	//if (!shooting) {
 		m_click = false;

@@ -165,12 +165,12 @@ void BackEnd::GUI(entt::registry* reg, Scene* scene)
 void BackEnd::ReshapeWindow(int w, int h, entt::registry * mainReg)
 {
 	//lock the aspect ratio because it was causing so many problems
-	if (w > h) {
+	/*if (w > h) {
 		w = h;
 	}
 	else {
 		h = w;
-	}
+	}*/
 
 	//Reshapes the window when the window is resized
 	glViewport(0, 0, GLsizei(w), GLsizei(h));
