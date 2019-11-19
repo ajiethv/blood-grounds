@@ -3,6 +3,8 @@
 #undef main
 int main()
 {
+	srand(time(NULL));
+
 	//Create the Game
 	Game game;
 

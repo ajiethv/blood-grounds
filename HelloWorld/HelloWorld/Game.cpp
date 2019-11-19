@@ -85,35 +85,58 @@ void Game::Update()
 	//Update the backend
 	BackEnd::Update(m_register);
 
+	m_bulletOffset = (float)(rand() % 20 - 10);
 
+	//KINDA WORKS FOR A SHOTGUN ===========================================================================================================================================================
+	/*if (m_shotgunShooting > 0) {
+		{
+			auto bullet = ECS::CreateEntity();
 
-	std::cout << ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() << " " << ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() << "\n";
-	std::cout << ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionX() << " " << ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionY() << "\n\n";
+			ECS::AttachComponent<Sprite>(bullet);
+			ECS::AttachComponent<Transform>(bullet);
+			ECS::AttachComponent<Bullet>(bullet);
+
+			std::string fileName = "bullet.png";
+
+			vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+			ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
+			ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
+			ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ() + (m_bulletOffset * PI / 180.f));
+			ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
+			ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
+
+			unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+			ECS::SetUpIdentifier(bullet, bitHolder, "bullet");
+			m_bullet.push_back(bullet);
+		}
+		m_shotgunShooting -= 1;
+	}*/
 
 	int interval = 0;
 	std::vector<int> deleteBullet;
 	for (auto entity : m_bullet) {
 		float angle = (ECS::GetComponent<Transform>(entity).GetRotationAngleZ()) * (180.f / 3.1514f);
-		vec2 bulletVelocity = vec2(10.f, 10.f);
+		vec2 bulletVelocity = vec2(ECS::GetComponent<Bullet>(entity).GetSpeed(), ECS::GetComponent<Bullet>(entity).GetSpeed());
 
 		if (angle < 90.f) {
-			bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
-			bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
+			bulletVelocity.x = bulletVelocity.x * cos(angle * (PI / 180.f));
+			bulletVelocity.y = bulletVelocity.y * sin(angle * (PI / 180.f));
 		}
 		else if (angle < 180.f) {
 			angle = 180.f - angle;
-			bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
-			bulletVelocity.y = bulletVelocity.y * sin(angle * (3.1514f / 180.f));
+			bulletVelocity.x = -(bulletVelocity.x * cos(angle * (PI / 180.f)));
+			bulletVelocity.y = bulletVelocity.y * sin(angle * (PI / 180.f));
 		}
 		else if (angle < 270.f) {
 			angle -= 180.f;
-			bulletVelocity.x = -(bulletVelocity.x * cos(angle * (3.1514f / 180.f)));
-			bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
+			bulletVelocity.x = -(bulletVelocity.x * cos(angle * (PI / 180.f)));
+			bulletVelocity.y = -(bulletVelocity.y * sin(angle * (PI / 180.f)));
 		}
 		else if (angle < 360.f) {
 			angle = 360.f - angle;
-			bulletVelocity.x = bulletVelocity.x * cos(angle * (3.1514f / 180.f));
-			bulletVelocity.y = -(bulletVelocity.y * sin(angle * (3.1514f / 180.f)));
+			bulletVelocity.x = bulletVelocity.x * cos(angle * (PI / 180.f));
+			bulletVelocity.y = -(bulletVelocity.y * sin(angle * (PI / 180.f)));
 		}
 		else if (angle == 90.f) {
 			bulletVelocity.x = 0.f;
@@ -146,6 +169,15 @@ void Game::Update()
 		m_bullet.erase(m_bullet.begin() + x);
 	}
 	deleteBullet.clear();
+
+	//WORKS FOR AN AUTOMATIC GUN =============================================================================================================================================================
+	/*if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && !m_click && m_rateOfFire > 0.f) {
+		m_rateOfFire -= 1.f;
+	}
+	else {
+		m_click = true;
+		m_rateOfFire = 10.f;
+	}*/
 }
 
 void Game::GUI()
@@ -247,16 +279,16 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	float angle = 0.f;
 
 	if (mousePos.x < 0.f && mousePos.y > 0.f) {
-		angle = abs((atan(float(mousePos.y) / float(mousePos.x))) * (180.f / 3.1415f));
+		angle = abs((atan(float(mousePos.y) / float(mousePos.x))) * (180.f / PI));
 	}
 	else if (mousePos.x > 0.f && mousePos.y > 0.f) {
-		angle = (atan(float(mousePos.x) / float(mousePos.y))) * (180.f / 3.1415f) + 90.f;
+		angle = (atan(float(mousePos.x) / float(mousePos.y))) * (180.f / PI) + 90.f;
 	}
 	else if (mousePos.x > 0.f && mousePos.y < 0.f) {
-		angle = abs((atan(float(mousePos.y) / float(mousePos.x))) * (180.f / 3.1415f)) + 180.f;
+		angle = abs((atan(float(mousePos.y) / float(mousePos.x))) * (180.f / PI)) + 180.f;
 	}
 	else if (mousePos.x < 0.f && mousePos.y < 0.f) {
-		angle = (atan(float(mousePos.x) / float(mousePos.y))) * (180.f / 3.1415f) + 270.f;
+		angle = (atan(float(mousePos.x) / float(mousePos.y))) * (180.f / PI) + 270.f;
 	}
 	else if (mousePos.y == 0.f) {
 		if (mousePos.x > 0.f) {
@@ -277,7 +309,7 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 
 	}
 
-	ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(angle * (3.1415f / 180.f));
+	ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(angle * (PI / 180.f));
 
 	if (m_guiActive)
 	{
@@ -297,7 +329,8 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 {
 	bool shooting = false;
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		shooting = true;
+		//WORKS FOR A REALLY RAPIDFIRE GUN (MINIGUN) ============================================================================================================================================
+		//shooting = true;
 
 		{
 			auto bullet = ECS::CreateEntity();
@@ -307,12 +340,12 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 			ECS::AttachComponent<Bullet>(bullet);
 
 			std::string fileName = "bullet.png";
-
+			
 			vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
 
 			ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
 			ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
-			ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ());
+			ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ() + (m_bulletOffset * PI / 180.f));
 			ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
 			ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
 
@@ -320,6 +353,8 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 			ECS::SetUpIdentifier(bullet, bitHolder, "bullet");
 			m_bullet.push_back(bullet);
 		}
+		//KINDA WORKS FOR A SHOTGUN ==========================================================================================================================================================
+		//m_shotgunShooting = 10;
 	}
 
 	if (m_guiActive)
@@ -334,9 +369,9 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 
-	//if (!shooting) {
+	if (!shooting) {
 		m_click = false;
-	//}
+	}
 }
 
 void Game::MouseWheel(SDL_MouseWheelEvent evnt)

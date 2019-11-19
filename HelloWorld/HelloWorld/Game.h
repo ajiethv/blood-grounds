@@ -95,6 +95,9 @@ private:
 
 	//stuff for the game
 	std::vector<int> m_bullet;
+	float m_bulletOffset = 0.f;
+	int m_shotgunShooting = 0;
+	float m_rateOfFire = 10.f;
 };
 
 
