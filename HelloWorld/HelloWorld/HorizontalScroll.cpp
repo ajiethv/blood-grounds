@@ -1,4 +1,5 @@
 #include "HorizontalScroll.h"
+#include "BackEnd.h"
 
 HorizontalScroll::HorizontalScroll()
 {
@@ -6,15 +7,16 @@ HorizontalScroll::HorizontalScroll()
 
 void HorizontalScroll::Update()
 {
+	float aspectRatio = (float)BackEnd::GetWindowWidth() / (float)BackEnd::GetWindowHeight();
 	if (m_focus->GetPosition().x > m_cam->m_localPosition.x + m_offset)
 	{
 		float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x + m_offset);
-		m_cam->SetPosition(vec3(m_cam->GetPosition().x + difference, m_cam->GetPosition().y, m_cam->GetPosition().z));
+		m_cam->SetPosition(vec3((m_cam->GetPosition().x + difference) / aspectRatio, m_cam->GetPosition().y, m_cam->GetPosition().z));
 	}
 	if (m_focus->GetPosition().x < m_cam->m_localPosition.x - m_offset)
 	{
 		float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x - m_offset);
-		m_cam->SetPosition(vec3(m_cam->GetPosition().x + difference, m_cam->GetPosition().y, m_cam->GetPosition().z));
+		m_cam->SetPosition(vec3((m_cam->GetPosition().x + difference) / aspectRatio, m_cam->GetPosition().y, m_cam->GetPosition().z));
 	}
 }
 
