@@ -165,8 +165,13 @@ void Game::Update()
 	}
 
 	for (int x : deleteBullet) {
+		interval = 0;
 		ECS::DestroyEntity(m_bullet[x]);
 		m_bullet.erase(m_bullet.begin() + x);
+		for (int y : deleteBullet) {
+			deleteBullet[interval] -= 1;
+			interval++;
+		}
 	}
 	deleteBullet.clear();
 
