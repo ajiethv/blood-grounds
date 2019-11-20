@@ -85,6 +85,11 @@ void Game::Update()
 	//Update the backend
 	BackEnd::Update(m_register);
 
+	std::cout << m_reloadSpeed << "\n" << m_magazineSize << "\n\n";
+	if (m_magazineSize == 0 && m_reloadSpeed == 0.f) {
+		m_reloadSpeed = 100.f;
+	}
+
 	m_bulletOffset = (float)(rand() % 20 - 10);
 
 	//KINDA WORKS FOR A SHOTGUN ===========================================================================================================================================================
@@ -183,6 +188,13 @@ void Game::Update()
 		m_click = true;
 		m_rateOfFire = 10.f;
 	}*/
+	if (m_reloadSpeed != 0.f) {
+		m_reloadSpeed -= 1.f;
+		if (m_reloadSpeed <= 0.f) {
+			m_reloadSpeed = 0.f;
+			m_magazineSize = 10.f;
+		}
+	}
 }
 
 void Game::GUI()
@@ -264,6 +276,11 @@ void Game::KeyboardHold()
 void Game::KeyboardDown()
 {
 	//Keyboard button down
+	if (Input::GetKeyDown(Key::R)) {
+		if (m_magazineSize < 10) {
+			m_reloadSpeed = 100.f;
+		}
+	}
 }
 
 void Game::KeyboardUp()
@@ -333,33 +350,37 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 void Game::MouseClick(SDL_MouseButtonEvent evnt)
 {
 	bool shooting = false;
-	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		//WORKS FOR A REALLY RAPIDFIRE GUN (MINIGUN) ============================================================================================================================================
-		//shooting = true;
+	if (m_reloadSpeed == 0.f) {
+		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			//WORKS FOR A REALLY RAPIDFIRE GUN (MINIGUN) ============================================================================================================================================
+			//shooting = true;
 
-		{
-			auto bullet = ECS::CreateEntity();
+			{
+				auto bullet = ECS::CreateEntity();
 
-			ECS::AttachComponent<Sprite>(bullet);
-			ECS::AttachComponent<Transform>(bullet);
-			ECS::AttachComponent<Bullet>(bullet);
+				ECS::AttachComponent<Sprite>(bullet);
+				ECS::AttachComponent<Transform>(bullet);
+				ECS::AttachComponent<Bullet>(bullet);
 
-			std::string fileName = "bullet.png";
-			
-			vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+				std::string fileName = "bullet.png";
 
-			ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
-			ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
-			ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ() + (m_bulletOffset * PI / 180.f));
-			ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
-			ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
+				vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
 
-			unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-			ECS::SetUpIdentifier(bullet, bitHolder, "bullet");
-			m_bullet.push_back(bullet);
+				ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
+				ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
+				ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ() + (m_bulletOffset * PI / 180.f));
+				ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
+				ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
+
+				unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+				ECS::SetUpIdentifier(bullet, bitHolder, "bullet");
+				m_bullet.push_back(bullet);
+			}
+			//KINDA WORKS FOR A SHOTGUN ==========================================================================================================================================================
+			//m_shotgunShooting = 10;
+
+			m_magazineSize -= 1;
 		}
-		//KINDA WORKS FOR A SHOTGUN ==========================================================================================================================================================
-		//m_shotgunShooting = 10;
 	}
 
 	if (m_guiActive)

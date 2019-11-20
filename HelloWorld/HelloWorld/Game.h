@@ -98,6 +98,8 @@ private:
 	float m_bulletOffset = 0.f;
 	int m_shotgunShooting = 0;
 	float m_rateOfFire = 10.f;
+	int m_magazineSize = 10.f;
+	float m_reloadSpeed = 0.f;
 };
 
 
