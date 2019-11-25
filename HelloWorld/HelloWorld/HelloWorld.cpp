@@ -67,6 +67,942 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character");
 		ECS::SetIsMainPlayer(player, true);
 	}
+
+	//set up the map
+	{
+		auto background = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(background);
+		ECS::AttachComponent<Transform>(background);
+
+		std::string fileName = "mapfinal.png";
+
+		ECS::GetComponent<Sprite>(background).LoadSprite(fileName, 500, 500);
+		ECS::GetComponent<Transform>(background).SetPosition(vec3(5.f, -5.f, 1.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(background, bitHolder, "Background");
+	}
+
+	//set up collision boxes
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 30, 500);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(240.f, -5.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 30, 500);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-230.f, -5.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 500, 30);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(5.f, 230.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 500, 30);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(5.f, -240.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 40, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-35.f, 100.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 40, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-35.f, 140.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-55.f, 150.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-65.f, 160.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-75.f, 170.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 100, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-125.f, 180.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-175.f, 170.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 100);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-180.f, 115.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 30, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-160.f, 70.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 60, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-85.f, 70.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-55.f, 80.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-50.f, 90.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 30, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(30.f, 140.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 40);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(40.f, 165.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(30.f, 185.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 30);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(20.f, 200.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 200, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(125.f, 210.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 60);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(220.f, 175.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(210.f, 145.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(200.f, 140.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 30, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(30.f, 100.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(40.f, 85.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(50.f, 75.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(65.f, 70.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(75.f, 60.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(85.f, 50.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(95.f, 40.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(105.f, 30.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(110.f, 20.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(185.f, 30.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(170.f, 35.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 190);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(190.f, -70.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(180.f, -160.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 60);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(140.f, -135.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(130.f, -105.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(120.f, -95.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(110.f, -85.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(100.f, -75.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 40);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(90.f, -55.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(105.f, -40.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(110.f, -25.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-60.f, -35.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 50);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-50.f, -60.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 30);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-40.f, -90.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 30);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-30.f, -110.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 60, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(5.f, -120.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(35.f, -130.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(45.f, -140.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(55.f, -150.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(65.f, -160.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 60);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(70.f, -195.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 200, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-35.f, -220.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-130.f, -175.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-140.f, -165.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-150.f, -155.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-160.f, -145.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-170.f, -135.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 100);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-180.f, -85.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 10, 20);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-170.f, -35.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 70, 10);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(-130.f, -30.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	{
+		auto collision = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(collision);
+		ECS::AttachComponent<Transform>(collision);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(collision).LoadSprite(fileName, 60, 30);
+		ECS::GetComponent<Transform>(collision).SetPosition(vec3(165.f, 90.f, 0.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
 	
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));

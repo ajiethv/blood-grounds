@@ -85,15 +85,14 @@ void Game::Update()
 	//Update the backend
 	BackEnd::Update(m_register);
 
-	std::cout << m_reloadSpeed << "\n" << m_magazineSize << "\n\n";
+	//std::cout << m_fireRate  << "\n" << m_reloadSpeed << "\n" << m_magazineSize << "\n\n";
 	if (m_magazineSize == 0 && m_reloadSpeed == 0.f) {
 		m_reloadSpeed = 100.f;
 	}
 
-	m_bulletOffset = (float)(rand() % 20 - 10);
+	m_bulletOffset = 0.f;// (float)(rand() % 20 - 10);
 
-	//KINDA WORKS FOR A SHOTGUN ===========================================================================================================================================================
-	/*if (m_shotgunShooting > 0) {
+	if (m_shotgunShooting > 0) {
 		{
 			auto bullet = ECS::CreateEntity();
 
@@ -116,7 +115,7 @@ void Game::Update()
 			m_bullet.push_back(bullet);
 		}
 		m_shotgunShooting -= 1;
-	}*/
+	}
 
 	int interval = 0;
 	std::vector<int> deleteBullet;
@@ -158,13 +157,57 @@ void Game::Update()
 			bulletVelocity.y = 0.f;
 		}
 
+		vec2 oldBulletPos = vec2(ECS::GetComponent<Transform>(entity).GetPositionX(), ECS::GetComponent<Transform>(entity).GetPositionY());
 		ECS::GetComponent<Transform>(entity).SetPosition(ECS::GetComponent<Transform>(entity).GetPositionX() + bulletVelocity.x, ECS::GetComponent<Transform>(entity).GetPositionY() + bulletVelocity.y, 10.f);
-
 		vec2 bulletPos = vec2(ECS::GetComponent<Transform>(entity).GetPositionX(), ECS::GetComponent<Transform>(entity).GetPositionY());
-		vec2 playerPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
 
-		if (bulletPos.x > playerPos.x + 100.f || bulletPos.x < playerPos.x - 100.f || bulletPos.y > playerPos.y + 100.f || bulletPos.y < playerPos.y - 100.f) {
-			deleteBullet.push_back(interval);
+		for (int i = 3; i <= 67; i++) {
+			vec2 normal[4] = {
+				vec2(-(bulletPos.y - oldBulletPos.y), bulletPos.x - oldBulletPos.x),
+				vec2(bulletPos.x - oldBulletPos.x, bulletPos.y - oldBulletPos.y),
+				vec2(0.f, 1.f),
+				vec2(1.f, 0.f)
+			};
+
+			bool collide = true;
+
+			for (vec2 n : normal) {
+				float shape1Points[2] = {
+					bulletPos.Dot(n),
+					oldBulletPos.Dot(n)
+				};
+				float shape2Points[4] = {
+					vec2(ECS::GetComponent<Transform>(i).GetPositionX() - (ECS::GetComponent<Transform>(i).GetScale().x / 2.f), ECS::GetComponent<Transform>(i).GetPositionY() - (ECS::GetComponent<Transform>(i).GetScale().y / 2.f)).Dot(n),
+					vec2(ECS::GetComponent<Transform>(i).GetPositionX() + (ECS::GetComponent<Transform>(i).GetScale().x / 2.f), ECS::GetComponent<Transform>(i).GetPositionY() - (ECS::GetComponent<Transform>(i).GetScale().y / 2.f)).Dot(n),
+					vec2(ECS::GetComponent<Transform>(i).GetPositionX() - (ECS::GetComponent<Transform>(i).GetScale().x / 2.f), ECS::GetComponent<Transform>(i).GetPositionY() + (ECS::GetComponent<Transform>(i).GetScale().y / 2.f)).Dot(n),
+					vec2(ECS::GetComponent<Transform>(i).GetPositionX() + (ECS::GetComponent<Transform>(i).GetScale().x / 2.f), ECS::GetComponent<Transform>(i).GetPositionY() + (ECS::GetComponent<Transform>(i).GetScale().y / 2.f)).Dot(n)
+				};
+
+				float max1 = shape1Points[0], min1 = shape1Points[0], max2 = shape2Points[0], min2 = shape2Points[0];
+				if (shape1Points[1] > max1) max1 = shape1Points[1];
+				else min1 = shape1Points[1];
+				for (int j = 1; j < 3; j++) {
+					if (max2 < shape2Points[j]) max2 = shape2Points[j];
+					if (min2 > shape2Points[j]) min2 = shape2Points[j];
+				}
+
+				if (!((max1 <= max2 && max1 >= min2) || (min1 <= max2 && min1 >= min2))) {
+					collide = false;
+					break;
+				}
+			}
+
+			vec2 collisionBoxMin = vec2(ECS::GetComponent<Transform>(i).GetPositionX() - (ECS::GetComponent<Transform>(i).GetScale().x / 2.f), ECS::GetComponent<Transform>(i).GetPositionY() - (ECS::GetComponent<Transform>(i).GetScale().y / 2.f));
+			vec2 collisionBoxMax = vec2(ECS::GetComponent<Transform>(i).GetPositionX() + (ECS::GetComponent<Transform>(i).GetScale().x / 2.f), ECS::GetComponent<Transform>(i).GetPositionY() + (ECS::GetComponent<Transform>(i).GetScale().y / 2.f));
+
+			if (bulletPos.x > collisionBoxMin.x && bulletPos.x < collisionBoxMax.x && bulletPos.y > collisionBoxMin.y && bulletPos.y < collisionBoxMax.y) {
+				collide = true;
+			}
+
+			if (collide) {
+				deleteBullet.push_back(interval);
+				break;
+			}
 		}
 		interval++;
 	}
@@ -181,18 +224,25 @@ void Game::Update()
 	deleteBullet.clear();
 
 	//WORKS FOR AN AUTOMATIC GUN =============================================================================================================================================================
-	/*if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && !m_click && m_rateOfFire > 0.f) {
-		m_rateOfFire -= 1.f;
+	/*if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && !m_click && m_automaticSpeed > 0.f) {
+		m_automaticSpeed -= 1.f;
 	}
 	else {
 		m_click = true;
-		m_rateOfFire = 10.f;
+		m_automaticSpeed = 10.f;
 	}*/
 	if (m_reloadSpeed != 0.f) {
 		m_reloadSpeed -= 1.f;
 		if (m_reloadSpeed <= 0.f) {
 			m_reloadSpeed = 0.f;
 			m_magazineSize = 10.f;
+		}
+	}
+
+	if (m_fireRate != 0.f) {
+		m_fireRate -= 1.f;
+		if (m_fireRate <= 0.f) {
+			m_fireRate = 0.f;
 		}
 	}
 }
@@ -246,8 +296,8 @@ void Game::AcceptInput()
 
 void Game::KeyboardHold()
 {
-
 	vec3 position = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+	vec2 playerSize = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().x / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().y / 2.f);
 	float speed = 1.f;
 	//Keyboard button held
 	if ((Input::GetKey(Key::W) && (Input::GetKey(Key::A) || Input::GetKey(Key::D))) || (Input::GetKey(Key::S) && (Input::GetKey(Key::A) || Input::GetKey(Key::D))))
@@ -258,18 +308,58 @@ void Game::KeyboardHold()
 	if (Input::GetKey(Key::A))
 	{
 		ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionX(position.x - speed);
+		position = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+		for (int i = 3; i <= 67; i++) {
+			vec2 collisionPoint1 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x + ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y + ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			vec2 collisionPoint2 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x - ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y - ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			if (position.x - playerSize.x < collisionPoint1.x && position.x + playerSize.x > collisionPoint2.x && position.y - playerSize.y < collisionPoint1.y && position.y + playerSize.y > collisionPoint2.y) {
+				ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionX(collisionPoint1.x + playerSize.x);
+				break;
+			}
+		}
 	}
 	if (Input::GetKey(Key::D))
 	{
 		ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionX(position.x + speed);
+		position = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+		for (int i = 3; i <= 67; i++) {
+			vec2 collisionPoint1 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x + ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y + ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			vec2 collisionPoint2 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x - ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y - ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			if (position.x - playerSize.x < collisionPoint1.x && position.x + playerSize.x > collisionPoint2.x&& position.y - playerSize.y < collisionPoint1.y && position.y + playerSize.y > collisionPoint2.y) {
+				ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionX(collisionPoint2.x - playerSize.x);
+				break;
+			}
+		}
 	}
 	if (Input::GetKey(Key::W))
 	{
 		ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionY(position.y + speed);
+		position = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+		for (int i = 3; i <= 67; i++) {
+			vec2 collisionPoint1 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x + ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y + ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			vec2 collisionPoint2 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x - ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y - ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			if (position.x - playerSize.x < collisionPoint1.x && position.x + playerSize.x > collisionPoint2.x&& position.y - playerSize.y < collisionPoint1.y && position.y + playerSize.y > collisionPoint2.y) {
+				ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionY(collisionPoint2.y - playerSize.y);
+				break;
+			}
+		}
 	}
 	if (Input::GetKey(Key::S))
 	{
 		ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionY(position.y - speed);
+		position = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+		for (int i = 3; i <= 67; i++) {
+			vec2 collisionPoint1 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x + ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y + ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			vec2 collisionPoint2 = vec2(ECS::GetComponent<Transform>(i).GetPosition().x - ECS::GetComponent<Transform>(i).GetScale().x / 2.f, ECS::GetComponent<Transform>(i).GetPosition().y - ECS::GetComponent<Transform>(i).GetScale().y / 2.f);
+			if (position.x - playerSize.x < collisionPoint1.x && position.x + playerSize.x > collisionPoint2.x&& position.y - playerSize.y < collisionPoint1.y && position.y + playerSize.y > collisionPoint2.y) {
+				ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPositionY(collisionPoint1.y + playerSize.y);
+				break;
+			}
+		}
 	}
 }
 
@@ -350,7 +440,7 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 void Game::MouseClick(SDL_MouseButtonEvent evnt)
 {
 	bool shooting = false;
-	if (m_reloadSpeed == 0.f) {
+	if (m_reloadSpeed == 0.f && m_fireRate == 0.f) {
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			//WORKS FOR A REALLY RAPIDFIRE GUN (MINIGUN) ============================================================================================================================================
 			//shooting = true;
@@ -380,6 +470,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 			//m_shotgunShooting = 10;
 
 			m_magazineSize -= 1;
+			m_fireRate = 20.f;
 		}
 	}
 

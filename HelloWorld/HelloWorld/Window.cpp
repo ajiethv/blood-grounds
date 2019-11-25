@@ -30,7 +30,6 @@ Window::Window(const std::string title, int windowWidth, int windowHeight, bool 
 			Close();
 		}
 	}
-	//SetWindowResizable(false);
 }
 
 Window::~Window()

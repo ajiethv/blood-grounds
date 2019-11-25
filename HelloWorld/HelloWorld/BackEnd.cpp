@@ -164,14 +164,6 @@ void BackEnd::GUI(entt::registry* reg, Scene* scene)
 
 void BackEnd::ReshapeWindow(int w, int h, entt::registry * mainReg)
 {
-	//lock the aspect ratio because it was causing so many problems
-	/*if (w > h) {
-		w = h;
-	}
-	else {
-		h = w;
-	}*/
-
 	//Reshapes the window when the window is resized
 	glViewport(0, 0, GLsizei(w), GLsizei(h));
 	//Resize all framebuffers here
@@ -190,7 +182,7 @@ void BackEnd::ReshapeWindow(int w, int h, entt::registry * mainReg)
 	//Set values
 	mainReg->get<Camera>(EntityIdentifier::MainCamera()).SetWindowSize(vec2(float(m_windowWidth), float(m_windowHeight)));
 	mainReg->get<Camera>(EntityIdentifier::MainCamera()).Orthographic(m_aspectRatio, temp.x, temp.y, temp.z, temp.w, tempCam.GetNear(), tempCam.GetFar());
-	mainReg->get<Camera>(EntityIdentifier::MainCamera()).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ()));
+	mainReg->get<Camera>(EntityIdentifier::MainCamera()).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / m_aspectRatio, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ()));
 }
 
 Window * BackEnd::GetWindow()
