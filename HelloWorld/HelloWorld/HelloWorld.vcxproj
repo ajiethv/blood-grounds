@@ -134,6 +134,7 @@
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="BackEnd.h" />
     <ClInclude Include="BloomEffect.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="HelloWorld.cpp" />
     <ClCompile Include="BackEnd.cpp" />
     <ClCompile Include="BloomEffect.cpp" />

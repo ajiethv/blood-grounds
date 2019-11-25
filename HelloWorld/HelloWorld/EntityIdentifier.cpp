@@ -13,6 +13,7 @@ unsigned int EntityIdentifier::m_healthBarBit			= 0x1000000;
 unsigned int EntityIdentifier::m_horiScrollCameraBit	= 0x10000000;
 unsigned int EntityIdentifier::m_vertiScrollCameraBit	= 0x2;
 unsigned int EntityIdentifier::m_bulletBit				= 0x20;
+unsigned int EntityIdentifier::m_enemyBit				= 0x200;
 
 //(having just camera means the bit = 1)
 //(having sprite, animation and transform)
@@ -128,6 +129,11 @@ unsigned int EntityIdentifier::VertiScrollCameraBit()
 unsigned int EntityIdentifier::BulletBit()
 {
 	return m_bulletBit;
+}
+
+unsigned int EntityIdentifier::EnemyBit()
+{
+	return m_enemyBit;
 }
 
 void EntityIdentifier::MainPlayer(unsigned int entity)
