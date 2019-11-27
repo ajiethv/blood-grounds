@@ -117,6 +117,11 @@ inline void to_json(nlohmann::json& j, const Scene& scene)
 			j[std::to_string(counter)]["Enemy"] = scene.GetScene()->get<Enemy>(entity);
 		}
 
+		if (identity & EntityIdentifier::BarrierBit())
+		{
+			j[std::to_string(counter)]["Barrier"] = scene.GetScene()->get<Barrier>(entity);
+		}
+
 		//For each loop increase the counter
 		counter++;
 	}
@@ -259,6 +264,12 @@ inline void from_json(const nlohmann::json& j, Scene& scene)
 		{
 			reg.assign<Enemy>(entity);
 			reg.get<Enemy>(entity) = j["Scene"][std::to_string(i)]["Enemy"];
+		}
+
+		if (identity & EntityIdentifier::BarrierBit())
+		{
+			reg.assign<Barrier>(entity);
+			reg.get<Barrier>(entity) = j["Scene"][std::to_string(i)]["Barrier"];
 		}
 	}
 

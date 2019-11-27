@@ -50,6 +50,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		ECS::AttachComponent<Sprite>(player);
 		ECS::AttachComponent<Transform>(player);
+		ECS::AttachComponent<HealthBar>(player);
 		//ECS::AttachComponent<AnimationController>(player);
 
 		std::string fileName = "download.png";
@@ -62,6 +63,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 10, 10/*, true, &animController*/);
 		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 100.f));
+		ECS::GetComponent<HealthBar>(player).SetHealth(100.f);
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit()/* | EntityIdentifier::AnimationBit()*/;
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character");
@@ -1002,6 +1004,136 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(collision, bitHolder, "Collision Box");
+	}
+
+	//create enemy spawnpoints
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, 0.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(0.f, 230.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, 0.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(0.f, -240.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, 230.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, -240.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, 230.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+	{
+		auto spawn = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(spawn);
+		ECS::AttachComponent<Transform>(spawn);
+
+		std::string fileName = "NoSprite";
+
+		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, -240.f, 2.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
+	}
+
+	//Draw the health Bar
+	{
+		auto healthBar = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(healthBar);
+		ECS::AttachComponent<Transform>(healthBar);
+
+		std::string fileName = "HealthBar.png";
+
+		ECS::GetComponent<Sprite>(healthBar).LoadSprite(fileName, ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() / 10, 2);
+		ECS::GetComponent<Transform>(healthBar).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 7, 100.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(healthBar, bitHolder, "Health Bar");
 	}
 	
 	//set the camera to focus on the main player

@@ -95,12 +95,19 @@ private:
 
 	//stuff for the game
 	std::vector<int> m_bullet;
+	std::vector<int> m_barrier;
+	std::vector<int> m_enemy;
 	float m_bulletOffset = 0.f;
 	int m_shotgunShooting = 0;
 	float m_automaticSpeed = 10.f;
 	int m_magazineSize = 10.f;
 	float m_reloadSpeed = 0.f;
 	float m_fireRate = 0.f;
+	float m_playerInvulnerability = 0.f;
+	bool m_buildMode = false;
+	int m_currentWave = 0;
+	int m_totalZombieNum = 0;
+	int m_currentZombieNum = 0;
 };
 
 
