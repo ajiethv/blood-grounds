@@ -1,6 +1,9 @@
 #pragma once
 
 #include "JSON.h"
+#include "PathFinder.h"
+#include "Vector.h"
+#include <math.h>
 
 class Enemy {
 public:
@@ -12,12 +15,24 @@ public:
 	void SetDamage(float d);
 	void SetSpeed(float s);
 	void SetInvulnerability(float i);
+	void SetEnemyX(float x);
+	void SetEnemyY(float y);
+	void SetTargets(std::vector<Node> t);
+	void SetPosition(Node p);
 
 	//getters
 	float GetHealth() const;
 	float GetDamage() const;
 	float GetSpeed() const;
 	float GetInvulnerability() const;
+	Node GetPosition();
+	std::vector<Node> GetTargets();
+
+	//Ai stuff
+	bool AtTarget(int i);
+	void RemoveTarget();
+	vec2 ToNode(vec2 pos);
+	vec2 FromNode(vec2 pos);
 
 private:
 	//variables
@@ -25,6 +40,12 @@ private:
 	float m_damage = 0.f;
 	float m_speed = 0.f;
 	float m_invulnerability = 0.f;
+
+	Node m_position;
+	std::vector<Node> m_targets;
+	std::vector<float> m_enemyX;
+	std::vector<float> m_enemyY;
+	void NewTarget(Map map, Node pos, Node goTo);
 };
 
 //Sends enemy TO json file

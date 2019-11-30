@@ -1,6 +1,7 @@
 #include "HelloWorld.h"
 #include "Game.h"
 
+
 HelloWorld::HelloWorld(std::string name)
 	: Scene(name)
 {
@@ -13,7 +14,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 	ECS::AttachRegister(m_sceneReg);
 
-	float aspectRatio = 1.f;
+	float aspectRatio = windowWidth / windowHeight;
 
 	//set up camera component
 	{
@@ -43,7 +44,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 	//set main player
 	{
-		//auto animations = File::LoadJSON("Animation Name.json");
+		auto animations = File::LoadJSON("PlayerWeapons.json");
 
 		auto player = ECS::CreateEntity();
 		EntityIdentifier::MainPlayer(player);
@@ -51,21 +52,28 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Sprite>(player);
 		ECS::AttachComponent<Transform>(player);
 		ECS::AttachComponent<HealthBar>(player);
-		//ECS::AttachComponent<AnimationController>(player);
+		ECS::AttachComponent<AnimationController>(player);
 
-		std::string fileName = "download.png";
-		//auto& animController = ECS::GetComponent<AnimationController>(player);
-		//animController.InitUVs(fileName);
+		std::string fileName = "PlayerSpritesheet.png";
+		auto& animController = ECS::GetComponent<AnimationController>(player);
+		animController.InitUVs(fileName);
 
-		//animController.AddAnimation(animations["Specific Animation Name"]);
+		animController.AddAnimation(animations["pistol1"]);
+		animController.AddAnimation(animations["pistol2"]);
+		animController.AddAnimation(animations["assult1"]);
+		animController.AddAnimation(animations["assult2"]);
+		animController.AddAnimation(animations["shotgun1"]);
+		animController.AddAnimation(animations["shotgun2"]);
+		animController.AddAnimation(animations["rifle1"]);
+		animController.AddAnimation(animations["rifle2"]);
 
-		//animController.SetActiveAnim(0);
+		animController.SetActiveAnim(0);
 
-		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 10, 10/*, true, &animController*/);
+		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 10, 10, true, &animController);
 		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 100.f));
 		ECS::GetComponent<HealthBar>(player).SetHealth(100.f);
 
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit()/* | EntityIdentifier::AnimationBit()*/;
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit() | EntityIdentifier::HealthBarBit();
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character");
 		ECS::SetIsMainPlayer(player, true);
 	}
@@ -1016,7 +1024,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, 0.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, 0.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1030,7 +1038,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(0.f, 230.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(0.f, 230.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1044,7 +1052,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, 0.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, 0.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1058,7 +1066,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(0.f, -240.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(0.f, -240.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1072,7 +1080,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, 230.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, 230.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1086,7 +1094,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, -240.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(240.f, -240.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1100,7 +1108,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, 230.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, 230.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1114,7 +1122,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "NoSprite";
 
 		ECS::GetComponent<Sprite>(spawn).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, -240.f, 2.f));
+		ECS::GetComponent<Transform>(spawn).SetPosition(vec3(-230.f, -240.f, 0.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(spawn, bitHolder, "Spawn Point");
@@ -1129,13 +1137,53 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		std::string fileName = "HealthBar.png";
 
-		ECS::GetComponent<Sprite>(healthBar).LoadSprite(fileName, ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() / 10, 2);
-		ECS::GetComponent<Transform>(healthBar).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 7, 100.f));
+		ECS::GetComponent<Sprite>(healthBar).LoadSprite(fileName, ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() * aspectRatio, 4);
+		ECS::GetComponent<Transform>(healthBar).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 90, 100.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		ECS::SetUpIdentifier(healthBar, bitHolder, "Health Bar");
+	}
+	{
+		auto healthBar = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(healthBar);
+		ECS::AttachComponent<Transform>(healthBar);
+
+		std::string fileName = "No SPRITE";
+
+		ECS::GetComponent<Sprite>(healthBar).LoadSprite(fileName, 102 * aspectRatio, 6);
+		ECS::GetComponent<Transform>(healthBar).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 90, 99.f));
 
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(healthBar, bitHolder, "Health Bar");
 	}
 	
+	//set main player legs
+	{
+		auto animations = File::LoadJSON("PlayerFeet.json");
+
+		auto playerLegs = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(playerLegs);
+		ECS::AttachComponent<Transform>(playerLegs);
+		ECS::AttachComponent<AnimationController>(playerLegs);
+
+		std::string fileName = "PlayerFeetSpritesheet.png";
+		auto& animController = ECS::GetComponent<AnimationController>(playerLegs);
+		animController.InitUVs(fileName);
+
+		animController.AddAnimation(animations["Idle"]);
+		animController.AddAnimation(animations["Walking"]);
+
+		animController.SetActiveAnim(0);
+
+		ECS::GetComponent<Sprite>(playerLegs).LoadSprite(fileName, 10, 10, true, &animController);
+		ECS::GetComponent<Transform>(playerLegs).SetPosition(vec3(0.f, 0.f, 99.f));
+
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+		ECS::SetUpIdentifier(playerLegs, bitHolder, "Main Character Legs");
+	}
+
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));

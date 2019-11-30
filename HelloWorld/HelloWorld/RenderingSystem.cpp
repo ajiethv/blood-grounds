@@ -63,15 +63,6 @@ void RenderingSystem::Update(entt::registry* reg)
 		//Unbinds the shader
 		drawShader.Unbind();
 	}
-
-	auto view3 = reg->view<HealthBar>();
-	for (auto entity : view3)
-	{
-		auto& bar = view3.get(entity);
-
-		std::cout << "Entity Number " << std::to_string(entity) << " : ";
-		bar.DisplayHealth();
-	}
 }
 
 struct

@@ -1,0 +1,50 @@
+{
+  "assult1": {
+    "Frame0": [ 133.0, 65.0, 197.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "assult2": {
+    "Frame0": [ 199.0, 65.0, 263.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "pistol1": {
+    "Frame0": [ 1.0, 65.0, 65.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "pistol2": {
+    "Frame0": [ 67.0, 65.0, 131.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "rifle1": {
+    "Frame0": [ 397.0, 65.0, 461.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "rifle2": {
+    "Frame0": [ 463.0, 65.0, 527.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "shotgun1": {
+    "Frame0": [ 265.0, 65.0, 329.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  },
+  "shotgun2": {
+    "Frame0": [ 331.0, 65.0, 395.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.0010000000474974513
+  }
+}

@@ -159,7 +159,9 @@
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JSON.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="PathFinder.h" />
     <ClInclude Include="PixelateEffect.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingSystem.h" />
