@@ -18,6 +18,8 @@ public:
 	void SetEnemyX(float x);
 	void SetEnemyY(float y);
 	void SetTargets(std::vector<Node> t);
+	void DeleteTargets();
+	void SetNewTarget(Node t);
 	void SetPosition(Node p);
 
 	//getters
@@ -29,10 +31,11 @@ public:
 	std::vector<Node> GetTargets();
 
 	//Ai stuff
-	bool AtTarget(int i);
+	bool AtTarget();
 	void RemoveTarget();
 	vec2 ToNode(vec2 pos);
 	vec2 FromNode(vec2 pos);
+	Node playerNode(vec2 pos);
 
 private:
 	//variables
@@ -43,8 +46,8 @@ private:
 
 	Node m_position;
 	std::vector<Node> m_targets;
-	std::vector<float> m_enemyX;
-	std::vector<float> m_enemyY;
+	float m_enemyX;
+	float m_enemyY;
 	void NewTarget(Map map, Node pos, Node goTo);
 };
 

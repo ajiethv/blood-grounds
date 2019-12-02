@@ -50,7 +50,7 @@ public:
 	static int howFar(Node ai, Node target, int max)
 	{
 		float distance = sqrt(((ai.x - target.x) * (ai.x - target.x)) + ((ai.y - target.y) * (ai.y - target.y)));
-		return ((max - 2) * (distance / MAXDISTANCE()) + 2);
+		return ((max - 2) * (distance / (MAXDISTANCE())) + 3);
 	}
 	static std::vector<Node> aStar(Map map, Node pFinder, Node target) 
 	{

@@ -1,0 +1,26 @@
+{
+  "auto": {
+    "Frame0": [ 67.0, 65.0, 131.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.009999999776482582
+  },
+  "pistol": {
+    "Frame0": [ 1.0, 65.0, 65.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.009999999776482582
+  },
+  "rifle": {
+    "Frame0": [ 199.0, 65.0, 263.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.009999999776482582
+  },
+  "shotgun": {
+    "Frame0": [ 133.0, 65.0, 197.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.009999999776482582
+  }
+}

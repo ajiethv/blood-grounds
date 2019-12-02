@@ -26,17 +26,27 @@ void Enemy::SetInvulnerability(float i)
 
 void Enemy::SetEnemyX(float x)
 {
-	m_enemyX.push_back((x + 240) / 10);
+	m_enemyX = (x + 240) / 10;
 }
 
 void Enemy::SetEnemyY(float y)
 {
-	m_enemyY.push_back((y + 250) / 10);
+	m_enemyY = (y + 250) / 10;
 }
 
 void Enemy::SetTargets(std::vector<Node> t)
 {
 	m_targets = t;
+}
+
+void Enemy::DeleteTargets()
+{
+	m_targets.clear();
+}
+
+void Enemy::SetNewTarget(Node t)
+{
+	m_targets.push_back(t);
 }
 
 void Enemy::SetPosition(Node p)
@@ -74,17 +84,21 @@ std::vector<Node> Enemy::GetTargets()
 	return m_targets;
 }
 
-bool Enemy::AtTarget(int i)
+bool Enemy::AtTarget()
 {
-	if (abs(this->m_position.x - m_enemyX[i]) < 5.f && abs(this->m_position.y - m_enemyY[i]) < 5.f) {
-		return true;
+	if (m_targets.size() >= 2) {
+		if (abs(this->m_targets[1].x - m_enemyX) <= 1.f && abs(this->m_targets[1].y - m_enemyY) <= 1.f) {
+			return true;
+		}
 	}
 	return false;
 }
 
 void Enemy::RemoveTarget()
 {
-	m_targets.erase(m_targets.begin());
+	if (m_targets.size() > 0) {
+		m_targets.erase(m_targets.begin());
+	}
 }
 
 vec2 Enemy::ToNode(vec2 pos)
@@ -109,6 +123,18 @@ vec2 Enemy::FromNode(vec2 pos)
 	pos.x += 10;
 
 	return vec2(pos);
+}
+
+Node Enemy::playerNode(vec2 pos)
+{
+	pos.x -= 10;
+	pos.y += 10;
+	pos.y = -pos.y;
+
+	pos.x = (pos.x / 10) + 25;
+	pos.y = (pos.y / 10) + 25;
+
+	return Node(pos.x, pos.y);
 }
 
 void Enemy::NewTarget(Map map, Node pos, Node goTo)
