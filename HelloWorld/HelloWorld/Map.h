@@ -28,11 +28,11 @@ public:
 	{
 		try
 		{
-			if (local[x][y] == 1)
+			if (local[x][y] == 0)
 			{
-				return false;
+				return true;
 			}
-			return true;
+			return false;
 		}
 		catch (const std::exception& e)
 		{

@@ -125,7 +125,7 @@ void Game::Update()
 				ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
 				ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
 				ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ() + (m_bulletOffset * PI / 180.f));
-				ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
+				ECS::GetComponent<Bullet>(bullet).SetDamage(4.f);
 				ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
 				ECS::GetComponent<Bullet>(bullet).SetBulletPen(0);
 
@@ -148,7 +148,7 @@ void Game::Update()
 				ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 1, 1);
 				ECS::GetComponent<Transform>(bullet).SetPosition(vec3(playerPos.x, playerPos.y, 10.f));
 				ECS::GetComponent<Transform>(bullet).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ() + (m_bulletOffset * PI / 180.f));
-				ECS::GetComponent<Bullet>(bullet).SetDamage(10.f);
+				ECS::GetComponent<Bullet>(bullet).SetDamage(4.f);
 				ECS::GetComponent<Bullet>(bullet).SetSpeed(10.f);
 				ECS::GetComponent<Bullet>(bullet).SetBulletPen(0);
 
@@ -159,7 +159,7 @@ void Game::Update()
 			m_shotgunShooting -= 2;
 		}
 
-		int interval = 0, interval2 = 0;
+		int interval = 0;
 		std::vector<int> deleteBullet;
 		std::vector<int> deleteEnemy;
 
@@ -249,12 +249,12 @@ void Game::Update()
 
 				if (collide) {
 					deleteBullet.push_back(interval);
+					break;
 				}
 			}
 
+			int interval2 = 0;
 			for (int enemy : m_enemy) {
-				//if (ECS::GetComponent<AnimationController>(enemy).)
-
 				if (ECS::GetComponent<Enemy>(enemy).GetInvulnerability() == 0.f) {
 					float enemyAngle = ECS::GetComponent<Transform>(enemy).GetRotationAngleZ() * (180.f / PI);
 					if (enemyAngle >= 270.f) {
@@ -315,13 +315,15 @@ void Game::Update()
 					}
 
 					if (collide) {
-						ECS::GetComponent<Enemy>(enemy).SetInvulnerability(2.f);
+						for (int allEnemies : m_enemy) {
+							ECS::GetComponent<Enemy>(allEnemies).SetInvulnerability(2.f);
+						}
 
 						ECS::GetComponent<Enemy>(enemy).SetHealth(ECS::GetComponent<Enemy>(enemy).GetHealth() - ECS::GetComponent<Bullet>(bullet).GetDamage());
 
 						if (ECS::GetComponent<Enemy>(enemy).GetHealth() <= 0.f) {
 							deleteEnemy.push_back(interval2);
-							if (rand() % 1 == 0) {
+							if (rand() % 10 == 0) {
 								{
 									auto animations = File::LoadJSON("Weapons.json");
 									auto weapon = ECS::CreateEntity();
@@ -359,7 +361,6 @@ void Game::Update()
 						}
 						else {
 							deleteBullet.push_back(interval);
-							break;
 						}
 					}
 				}
@@ -392,24 +393,53 @@ void Game::Update()
 			}
 		}
 
+		bool isDeleted = false;
 		int bulletLength = 0;
-		for (int x : deleteEnemy) {
+		for (int x : deleteBullet) {
 			bulletLength++;
 		}
 		for (int i = 0; i < bulletLength; i++) {
+			isDeleted = false;
 			for (int j = 0; j < bulletLength; j++) {
 				if (i != j && deleteBullet[i] == deleteBullet[j]) {
-					deleteBullet.erase(deleteBullet.begin() + j);
+					if (j < deleteBullet.size()) {
+						deleteBullet.erase(deleteBullet.begin() + j);
+						isDeleted = true;
+						break;
+					}
+				}
+			}
+			if (isDeleted) {
+				i--;
+				bulletLength--;
+			}
+		}
+		bulletLength = 0;
+		for (int x : deleteBullet) {
+			bulletLength++;
+		}
+		int temp = 0;
+		for (int i = bulletLength - 1; i > 0; i--) {
+			for (int j = 0; j < i; j++) {
+				if (j + 1 < deleteBullet.size()) {
+					if (deleteBullet[j] > deleteBullet[j + 1]) {
+						temp = deleteBullet[j + 1];
+						deleteBullet[j + 1] = deleteBullet[j];
+						deleteBullet[j] = temp;
+					}
 				}
 			}
 		}
+
 		for (int x : deleteBullet) {
-			interval = 0;
-			ECS::DestroyEntity(m_bullet[x]);
-			m_bullet.erase(m_bullet.begin() + x);
-			for (int y : deleteBullet) {
-				deleteBullet[interval] -= 1;
-				interval++;
+			if (x < m_bullet.size() && x >= 0) {
+				interval = 0;
+				ECS::DestroyEntity(m_bullet[x]);
+				m_bullet.erase(m_bullet.begin() + x);
+				for (int y : deleteBullet) {
+					deleteBullet[interval] -= 1;
+					interval++;
+				}
 			}
 		}
 		deleteBullet.clear();
@@ -419,29 +449,57 @@ void Game::Update()
 			enemyLength++;
 		}
 		for (int i = 0; i < enemyLength; i++) {
+			isDeleted = false;
 			for (int j = 0; j < enemyLength; j++) {
 				if (i != j && deleteEnemy[i] == deleteEnemy[j]) {
-					deleteEnemy.erase(deleteEnemy.begin() + j);
+					if (j < deleteEnemy.size()) {
+						deleteEnemy.erase(deleteEnemy.begin() + j);
+						isDeleted = true;
+						break;
+					}
+				}
+			}
+			if (isDeleted) {
+				i--;
+				enemyLength--;
+			}
+		}
+		enemyLength = 0;
+		for (int x : deleteEnemy) {
+			enemyLength++;
+		}
+		temp = 0;
+		for (int i = enemyLength - 1; i > 0; i--) {
+			for (int j = 0; j < i; j++) {
+				if (j + 1 < deleteEnemy.size()) {
+					if (deleteEnemy[j] > deleteEnemy[j + 1]) {
+						temp = deleteEnemy[j + 1];
+						deleteEnemy[j + 1] = deleteEnemy[j];
+						deleteEnemy[j] = temp;
+					}
 				}
 			}
 		}
+		
 		for (int x : deleteEnemy) {
-			interval2 = 0;
-			ECS::DestroyEntity(m_enemy[x]);
-			m_enemy.erase(m_enemy.begin() + x);
-			m_frameCounter.erase(m_frameCounter.begin() + x);
-			m_oldNodePos.erase(m_oldNodePos.begin() + x);
-			m_nextTargets.erase(m_nextTargets.begin() + x);
-			for (int y : deleteEnemy) {
-				deleteEnemy[interval2] -= 1;
-				interval2++;
+			if (x < m_enemy.size() && x < m_frameCounter.size() && x < m_oldNodePos.size() && x < m_nextTargets.size() && x >= 0) {
+				interval = 0;
+				ECS::DestroyEntity(m_enemy[x]);
+				m_enemy.erase(m_enemy.begin() + x);
+				m_frameCounter.erase(m_frameCounter.begin() + x);
+				m_oldNodePos.erase(m_oldNodePos.begin() + x);
+				m_nextTargets.erase(m_nextTargets.begin() + x);
+				for (int y : deleteEnemy) {
+					deleteEnemy[interval] -= 1;
+					interval++;
+				}
 			}
 		}
 		deleteEnemy.clear();
 
 		if (m_totalZombieNum == 0 && m_currentZombieNum == 0) {
 			m_currentWave++;
-			m_totalZombieNum = 10;
+			m_totalZombieNum = 30 + (5 * m_currentWave);
 		}
 
 		if (m_totalZombieNum > 0 && rand() % 100 == 0) {
@@ -477,7 +535,7 @@ void Game::Update()
 				ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10, true, &animController);
 				ECS::GetComponent<Transform>(enemy).SetPosition(vec3(spawnLocation.x, spawnLocation.y, 11.f));
 				ECS::GetComponent<Enemy>(enemy).SetHealth(10.f);
-				ECS::GetComponent<Enemy>(enemy).SetSpeed(0.1f);
+				ECS::GetComponent<Enemy>(enemy).SetSpeed(1.f);
 				ECS::GetComponent<Enemy>(enemy).SetDamage(10.f);
 
 				unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit() | EntityIdentifier::AnimationBit();
@@ -493,7 +551,6 @@ void Game::Update()
 				ECS::GetComponent<Enemy>(enemy).SetPosition(Node(nodePos.x, nodePos.y));
 			}
 
-			std::cout << "Spawn\n";
 			m_totalZombieNum--;
 			m_currentZombieNum++;
 		}
@@ -505,8 +562,8 @@ void Game::Update()
 				ECS::GetComponent<Enemy>(enemy).SetEnemyX(nodePos.x);
 				ECS::GetComponent<Enemy>(enemy).SetEnemyY(nodePos.y);
 				ECS::GetComponent<AnimationController>(enemy).SetActiveAnim(1);
-				if (count < m_frameCounter.size() && count < m_nextTargets.size()) {
-					if (m_frameCounter[count] >= 100 && ((int)nodePos.x >= (int)m_oldNodePos[count].x - 5 && (int)nodePos.x <= (int)m_oldNodePos[count].x + 5) && ((int)nodePos.y >= (int)m_oldNodePos[count].y - 5 && (int)nodePos.y <= (int)m_oldNodePos[count].y + 5)) {
+				if (count < m_frameCounter.size() && count < m_nextTargets.size() && count < m_oldNodePos.size() && count >= 0) {
+					if (m_frameCounter[count] >= 10 && ((int)nodePos.x >= (int)m_oldNodePos[count].x - 5 && (int)nodePos.x <= (int)m_oldNodePos[count].x + 5) && ((int)nodePos.y >= (int)m_oldNodePos[count].y - 5 && (int)nodePos.y <= (int)m_oldNodePos[count].y + 5)) {
 						m_nextTargets[count] = false;
 						m_oldNodePos[count] = nodePos;
 					}
@@ -586,80 +643,6 @@ void Game::Update()
 					ECS::GetComponent<Enemy>(enemy).SetEnemyY(nodePos.y);
 				}
 			}
-			/*vec3 enemyPos = ECS::GetComponent<Transform>(enemy).GetPosition();
-			vec3 enemySize = ECS::GetComponent<Transform>(enemy).GetScale();
-			vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
-			vec3 playerSize = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
-			vec2 speed = vec2(ECS::GetComponent<Enemy>(enemy).GetSpeed(), ECS::GetComponent<Enemy>(enemy).GetSpeed());
-
-			if (enemyPos.x > playerPos.x) {
-				if (enemyPos.y > playerPos.y) {
-					speed.x = -sqrt((speed.x * speed.x) + (speed.x * speed.x));
-					speed.y = -sqrt((speed.y * speed.y) + (speed.y * speed.y));
-				}
-				else if (enemyPos.y < playerPos.y) {
-					speed.x = -sqrt((speed.x * speed.x) + (speed.x * speed.x));
-					speed.y = sqrt((speed.y * speed.y) + (speed.y * speed.y));
-				}
-				else {
-					speed.x = -speed.x;
-					speed.y = 0.f;
-				}
-			}
-			else if (enemyPos.x < playerPos.x) {
-				if (enemyPos.y > playerPos.y) {
-					speed.x = sqrt((speed.x * speed.x) + (speed.x * speed.x));
-					speed.y = -sqrt((speed.y * speed.y) + (speed.y * speed.y));
-				}
-				else if (enemyPos.y < playerPos.y) {
-					speed.x = sqrt((speed.x * speed.x) + (speed.x * speed.x));
-					speed.y = sqrt((speed.y * speed.y) + (speed.y * speed.y));
-				}
-				else {
-					speed.y = 0.f;
-				}
-			}
-			else {
-				speed.x = 0.f;
-				if (!(enemyPos.y > playerPos.y || enemyPos.y < playerPos.y)) {
-					speed.y = 0.f;
-				}
-			}
-			ECS::GetComponent<Transform>(enemy).SetPosition(enemyPos.x + speed.x, enemyPos.y + speed.y, enemyPos.z);
-			
-			float angle = 0.f;
-			if (enemyPos.x < playerPos.x && enemyPos.y < playerPos.y) {
-				angle = abs((atan(float(enemyPos.y - playerPos.y) / float(enemyPos.x - playerPos.x))) * (180.f / PI));
-			}
-			else if (enemyPos.x > playerPos.x && enemyPos.y < playerPos.y) {
-				angle = (atan(float(enemyPos.y - playerPos.y) / float(enemyPos.x - playerPos.x))) * (180.f / PI) + 180.f;
-			}
-			else if (enemyPos.x > playerPos.x && enemyPos.y > playerPos.y) {
-				angle = abs((atan(float(enemyPos.y - playerPos.y) / float(enemyPos.x - playerPos.x))) * (180.f / PI)) + 180.f;
-			}
-			else if (enemyPos.x < playerPos.x && enemyPos.y > playerPos.y) {
-				angle = (atan(float(enemyPos.y - playerPos.y) / float(enemyPos.x - playerPos.x))) * (180.f / PI);
-			}
-			else if (enemyPos.y == playerPos.y) {
-				if (enemyPos.x > playerPos.x) {
-					angle = 180.f;
-				}
-				else {
-					angle = 0.f;
-				}
-
-			}
-			else if (enemyPos.x == playerPos.x) {
-				if (enemyPos.y > playerPos.y) {
-					angle = 90.f;
-				}
-				else {
-					angle = 270.f;
-				}
-
-			}
-
-			ECS::GetComponent<Transform>(enemy).SetRotationAngleZ(angle * (PI / 180.f));*/
 			m_frameCounter[count]++;
 			count++;
 		}
@@ -727,7 +710,23 @@ void Game::Update()
 		}
 	}
 	else {
-		std::cout << "You Died\n";
+		std::cout << m_currentWave << "\n";
+		{
+			auto enemy = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(enemy);
+			ECS::AttachComponent<Transform>(enemy);
+
+			std::string fileName = "deathscreen.png";
+
+			vec3 playerPos = ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPosition();
+
+			ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 400);
+			ECS::GetComponent<Transform>(enemy).SetPosition(vec3(playerPos.x, playerPos.y, 101.f));
+
+			unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+			ECS::SetUpIdentifier(enemy, bitHolder, "enemy");
+		}
 	}
 
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
@@ -901,12 +900,14 @@ void Game::KeyboardHold()
 		}
 
 		for (int x : deleteWeapon) {
-			interval = 0;
-			ECS::DestroyEntity(m_weaponDrop[x]);
-			m_weaponDrop.erase(m_weaponDrop.begin() + x);
-			for (int y : deleteWeapon) {
-				deleteWeapon[interval] -= 1;
-				interval++;
+			if (x < m_weaponDrop.size() && x >= 0) {
+				interval = 0;
+				ECS::DestroyEntity(m_weaponDrop[x]);
+				m_weaponDrop.erase(m_weaponDrop.begin() + x);
+				for (int y : deleteWeapon) {
+					deleteWeapon[interval] -= 1;
+					interval++;
+				}
 			}
 		}
 		deleteWeapon.clear();
@@ -982,12 +983,14 @@ void Game::KeyboardDown()
 			}
 
 			for (int x : deleteWeapon) {
-				interval = 0;
-				ECS::DestroyEntity(m_weaponDrop[x]);
-				m_weaponDrop.erase(m_weaponDrop.begin() + x);
-				for (int y : deleteWeapon) {
-					deleteWeapon[interval] -= 1;
-					interval++;
+				if (x < m_weaponDrop.size() && x >= 0) {
+					interval = 0;
+					ECS::DestroyEntity(m_weaponDrop[x]);
+					m_weaponDrop.erase(m_weaponDrop.begin() + x);
+					for (int y : deleteWeapon) {
+						deleteWeapon[interval] -= 1;
+						interval++;
+					}
 				}
 			}
 			deleteWeapon.clear();
